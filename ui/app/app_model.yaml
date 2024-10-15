@@ -1,0 +1,531 @@
+about:
+  date: October 15, 2024 16:43:39
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  CarInventory:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: model_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: vin
+      required: true
+      template: text
+      type: VARCHAR
+    - name: purchase_date
+      required: true
+      type: DATE
+    - name: status
+      required: true
+      template: text
+      type: VARCHAR
+    - name: sale_price
+      template: real
+      type: FLOAT
+    description: The CarInventory table tracks individual car units available for
+      sale or sold.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: The CarInventory table tracks individual car units available for sale
+      or sold.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: InventoryPartList
+      resource: InventoryPart
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: MaintenanceList
+      resource: Maintenance
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: SaleList
+      resource: Sale
+    - direction: toone
+      fks:
+      - model_id
+      name: model
+      resource: CarModel
+    type: CarInventory
+  CarModel:
+    columns:
+    - label: ' model_name*'
+      name: model_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: manufacturer
+      required: true
+      template: text
+      type: VARCHAR
+    - name: year
+      required: true
+      template: integer
+      type: INTEGER
+    - name: base_price
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The CarModel table represents different models of cars available
+      in the dealership.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: model_name
+    home_template: home_template.html
+    info_list: The CarModel table represents different models of cars available in
+      the dealership.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - model_id
+      name: CarInventoryList
+      resource: CarInventory
+    type: CarModel
+  Customer:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: phone
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Customer table stores information about the dealership's customers.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: The Customer table stores information about the dealership's customers.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: SaleList
+      resource: Sale
+    type: Customer
+  Dealership:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: address
+      template: text
+      type: VARCHAR
+    - name: phone
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Dealership table captures details of the dealership's locations.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: The Dealership table captures details of the dealership's locations.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dealership_id
+      name: DealershipEmployeeList
+      resource: DealershipEmployee
+    type: Dealership
+  DealershipEmployee:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: dealership_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: employee_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: The DealershipEmployee table links employees with specific dealership
+      locations.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: The DealershipEmployee table links employees with specific dealership
+      locations.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - dealership_id
+      name: dealership
+      resource: Dealership
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    type: DealershipEmployee
+  Employee:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: phone
+      template: text
+      type: VARCHAR
+    - name: position
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Employee table contains information about the dealership's employees.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: The Employee table contains information about the dealership's employees.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: DealershipEmployeeList
+      resource: DealershipEmployee
+    type: Employee
+  InventoryPart:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: inventory_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: part_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: used_in_maintenance
+      template: date
+      type: DATETIME
+    description: The InventoryPart table links parts to specific cars in inventory,
+      indicating part usage.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: The InventoryPart table links parts to specific cars in inventory,
+      indicating part usage.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    - direction: toone
+      fks:
+      - part_id
+      name: part
+      resource: Part
+    type: InventoryPart
+  Maintenance:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: inventory_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: service_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: maintenance_date
+      required: true
+      type: DATE
+    description: The Maintenance table records maintenance activities for cars.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: The Maintenance table records maintenance activities for cars.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    type: Maintenance
+  Part:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: supplier_id
+      template: integer
+      type: INTEGER
+    - name: price
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Parts table stores information about car parts available through
+      suppliers.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: The Parts table stores information about car parts available through
+      suppliers.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - part_id
+      name: InventoryPartList
+      resource: InventoryPart
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: Part
+  Sale:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: customer_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: inventory_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: sale_date
+      required: true
+      type: DATE
+    - name: sale_amount
+      required: true
+      template: real
+      type: FLOAT
+    description: The Sale table records each car sale transaction.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: The Sale table records each car sale transaction.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    type: Sale
+  Service:
+    columns:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: cost
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Service table logs services offered to cars, either during sale
+      or maintenance.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: The Service table logs services offered to cars, either during sale
+      or maintenance.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - service_id
+      name: MaintenanceList
+      resource: Maintenance
+    type: Service
+  Supplier:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: contact_email
+      template: text
+      type: VARCHAR
+    - name: contact_phone
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: The Supplier table contains details about suppliers providing cars
+      or parts.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: The Supplier table contains details about suppliers providing cars
+      or parts.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: PartList
+      resource: Part
+    type: Supplier
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

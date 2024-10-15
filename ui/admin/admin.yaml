@@ -1,0 +1,357 @@
+about:
+  date: October 15, 2024 16:43:39
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 10
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  CarInventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: model_id
+      required: true
+    - name: vin
+      required: true
+    - name: purchase_date
+      required: true
+      type: DATE
+    - name: status
+      required: true
+    - name: sale_price
+    description: The CarInventory table tracks individual car units available for
+      sale or sold.
+    info_list: The CarInventory table tracks individual car units available for sale
+      or sold.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: InventoryPartList
+      resource: InventoryPart
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: MaintenanceList
+      resource: Maintenance
+    - direction: tomany
+      fks:
+      - inventory_id
+      name: SaleList
+      resource: Sale
+    - direction: toone
+      fks:
+      - model_id
+      name: model
+      resource: CarModel
+    type: CarInventory
+    user_key: id
+  CarModel:
+    attributes:
+    - label: ' model_name*'
+      name: model_name
+      required: true
+      search: true
+      sort: true
+    - name: manufacturer
+      required: true
+    - name: year
+      required: true
+    - name: base_price
+      required: true
+    - name: id
+    description: The CarModel table represents different models of cars available
+      in the dealership.
+    info_list: The CarModel table represents different models of cars available in
+      the dealership.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - model_id
+      name: CarInventoryList
+      resource: CarInventory
+    type: CarModel
+    user_key: model_name
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: phone
+    - name: id
+    description: The Customer table stores information about the dealership's customers.
+    info_list: The Customer table stores information about the dealership's customers.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: SaleList
+      resource: Sale
+    type: Customer
+    user_key: name
+  Dealership:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: address
+    - name: phone
+    - name: id
+    description: The Dealership table captures details of the dealership's locations.
+    info_list: The Dealership table captures details of the dealership's locations.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dealership_id
+      name: DealershipEmployeeList
+      resource: DealershipEmployee
+    type: Dealership
+    user_key: name
+  DealershipEmployee:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: dealership_id
+      required: true
+    - name: employee_id
+      required: true
+    description: The DealershipEmployee table links employees with specific dealership
+      locations.
+    info_list: The DealershipEmployee table links employees with specific dealership
+      locations.
+    tab_groups:
+    - direction: toone
+      fks:
+      - dealership_id
+      name: dealership
+      resource: Dealership
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    type: DealershipEmployee
+    user_key: id
+  Employee:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: phone
+    - name: position
+      required: true
+    - name: id
+    description: The Employee table contains information about the dealership's employees.
+    info_list: The Employee table contains information about the dealership's employees.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: DealershipEmployeeList
+      resource: DealershipEmployee
+    type: Employee
+    user_key: name
+  InventoryPart:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: inventory_id
+      required: true
+    - name: part_id
+      required: true
+    - name: used_in_maintenance
+    description: The InventoryPart table links parts to specific cars in inventory,
+      indicating part usage.
+    info_list: The InventoryPart table links parts to specific cars in inventory,
+      indicating part usage.
+    tab_groups:
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    - direction: toone
+      fks:
+      - part_id
+      name: part
+      resource: Part
+    type: InventoryPart
+    user_key: id
+  Maintenance:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: inventory_id
+      required: true
+    - name: service_id
+      required: true
+    - name: maintenance_date
+      required: true
+      type: DATE
+    description: The Maintenance table records maintenance activities for cars.
+    info_list: The Maintenance table records maintenance activities for cars.
+    tab_groups:
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    type: Maintenance
+    user_key: id
+  Part:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: supplier_id
+    - name: price
+      required: true
+    - name: id
+    description: The Parts table stores information about car parts available through
+      suppliers.
+    info_list: The Parts table stores information about car parts available through
+      suppliers.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - part_id
+      name: InventoryPartList
+      resource: InventoryPart
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: Part
+    user_key: name
+  Sale:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: inventory_id
+      required: true
+    - name: sale_date
+      required: true
+      type: DATE
+    - name: sale_amount
+      required: true
+    description: The Sale table records each car sale transaction.
+    info_list: The Sale table records each car sale transaction.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - inventory_id
+      name: inventory
+      resource: CarInventory
+    type: Sale
+    user_key: id
+  Service:
+    attributes:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+    - name: cost
+      required: true
+    - name: id
+    description: The Service table logs services offered to cars, either during sale
+      or maintenance.
+    info_list: The Service table logs services offered to cars, either during sale
+      or maintenance.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - service_id
+      name: MaintenanceList
+      resource: Maintenance
+    type: Service
+    user_key: description
+  Supplier:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_email
+    - name: contact_phone
+    - name: id
+    description: The Supplier table contains details about suppliers providing cars
+      or parts.
+    info_list: The Supplier table contains details about suppliers providing cars
+      or parts.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: PartList
+      resource: Part
+    type: Supplier
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,51 @@
+<o-form-layout-manager attr="InventoryPart" mode="tab" title="INVENTORYPART">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="InventoryPartTable" 
+            service="InventoryPart" 
+            entity="InventoryPart" 
+            title="INVENTORYPART"
+            keys="id"
+            columns="id;inventory_id;part_id;used_in_maintenance" 
+            header-actions="R;D"
+            visible-columns="id;inventory_id;part_id;used_in_maintenance"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="inventory_id" title="inventory_id">
+    <o-table-cell-renderer-service attr="inventory_id" 
+        service="CarInventory" entity="CarInventoryType" columns="id;id"
+        parent-keys="id:inventory_id"
+        value-column="id" keys="inventory_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="part_id" title="part_id">
+    <o-table-cell-renderer-service attr="part_id" 
+        service="Part" entity="PartType" columns="id;name"
+        parent-keys="id:part_id"
+        value-column="name" keys="part_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-date-input #used_in_maintenance attr="used_in_maintenance" type="date" label="used_in_maintenance" enabled="yes" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

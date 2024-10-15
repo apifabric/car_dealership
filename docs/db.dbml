@@ -1,0 +1,103 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table CarInventory {
+    id INTEGER [primary key]
+    vin VARCHAR 
+    model_id INTEGER 
+    purchase_date DATE 
+    status VARCHAR 
+    sale_price FLOAT 
+    }
+
+Table CarModel {
+    id INTEGER [primary key]
+    model_name VARCHAR 
+    manufacturer VARCHAR 
+    year INTEGER 
+    base_price FLOAT 
+    }
+
+Table Customer {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    phone VARCHAR 
+    }
+
+Table Dealership {
+    id INTEGER [primary key]
+    name VARCHAR 
+    address VARCHAR 
+    phone VARCHAR 
+    }
+
+Table DealershipEmployee {
+    id INTEGER [primary key]
+    employee_id INTEGER 
+    dealership_id INTEGER 
+    }
+
+Table Employee {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    phone VARCHAR 
+    position VARCHAR 
+    }
+
+Table InventoryPart {
+    id INTEGER [primary key]
+    inventory_id INTEGER 
+    part_id INTEGER 
+    used_in_maintenance DATETIME 
+    }
+
+Table Part {
+    id INTEGER [primary key]
+    name VARCHAR 
+    price FLOAT 
+    supplier_id INTEGER 
+    }
+
+Table Maintenance {
+    id INTEGER [primary key]
+    inventory_id INTEGER 
+    service_id INTEGER 
+    maintenance_date DATE 
+    }
+
+Table Service {
+    id INTEGER [primary key]
+    description VARCHAR 
+    cost FLOAT 
+    }
+
+Table Supplier {
+    id INTEGER [primary key]
+    name VARCHAR 
+    contact_email VARCHAR 
+    contact_phone VARCHAR 
+    }
+
+Table Sale {
+    id INTEGER [primary key]
+    customer_id INTEGER 
+    inventory_id INTEGER 
+    sale_date DATE 
+    sale_amount FLOAT 
+    }
+
+
+
+// Relationships
+    Ref: CarInventory.(model_id) < CarModel.(id)
+    Ref: DealershipEmployee.(dealership_id) < Dealership.(id)
+    Ref: DealershipEmployee.(employee_id) < Employee.(id)
+    Ref: InventoryPart.(inventory_id) < CarInventory.(id)
+    Ref: InventoryPart.(part_id) < Part.(id)
+    Ref: Part.(supplier_id) < Supplier.(id)
+    Ref: Maintenance.(inventory_id) < CarInventory.(id)
+    Ref: Maintenance.(service_id) < Service.(id)
+    Ref: Sale.(customer_id) < Customer.(id)
+    Ref: Sale.(inventory_id) < CarInventory.(id)
